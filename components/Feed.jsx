@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import PromptCard from './PromptCard'
+import { useFilter } from '@hooks/useFilter'
 
 function PromptCardList ({ data, handleTagClick }) {
   return (
@@ -9,7 +10,7 @@ function PromptCardList ({ data, handleTagClick }) {
       {
         data.map(post => (
           <PromptCard
-            key={post.id}
+            key={post._id}
             post={post}
             handleTagClick={handleTagClick}
           />
@@ -22,10 +23,13 @@ function PromptCardList ({ data, handleTagClick }) {
 export default function Feed () {
   const [searchText, setSearchText] = useState('')
   const [posts, setPosts] = useState([])
+  const filteredPosts = useFilter(posts, searchText)
 
   const handleSearchChange = (event) => {
     setSearchText(event.target.value)
   }
+
+  const handleTagClick = (tag) => setSearchText(tag)
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -45,8 +49,8 @@ export default function Feed () {
       </form>
 
       <PromptCardList
-        data={posts}
-        handleTagClick={() => {}}
+        data={filteredPosts}
+        handleTagClick={handleTagClick}
       />
     </section>
   )

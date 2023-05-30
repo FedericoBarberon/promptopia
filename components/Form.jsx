@@ -22,7 +22,7 @@ export default function Form ({ type, post, setPost, submitting, handleSubmit })
             <span className='font-normal'> (product, webdevelopment, idea)</span>
           </span>
 
-          <input value={post.tag} onChange={(e) => setPost({ ...post, tag: e.target.value })} placeholder='#tag' required className='form_input' />
+          <input value={post.tag} onChange={(e) => setPost({ ...post, tag: e.target.value })} placeholder='tag' required className='form_input' />
         </label>
 
         <div className='flex-end mx-3 mb-5 gap-4'>
