@@ -4,11 +4,14 @@ import Image from 'next/image'
 import { useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { useSession } from 'next-auth/react'
+import Link from 'next/link'
 
 export default function PromptCard ({ post, handleTagClick, handleEdit, handleDelete }) {
   const [copied, setCopied] = useState('')
   const pathname = usePathname()
   const { data: session } = useSession()
+
+  const profileLink = session?.user.email === post.creator.email ? '/profile' : `/profile/${post.creator._id}?name=${post.creator.username}`
 
   const handleCopy = () => {
     setCopied(post.prompt)
@@ -19,14 +22,16 @@ export default function PromptCard ({ post, handleTagClick, handleEdit, handleDe
   return (
     <div className='prompt_card'>
       <div className='flex justify-between items-start gap-5'>
-        <div className='flex-1 flex justify-start items-center gap-3 cursor-pointer'>
-          <Image src={post.creator.image} alt='user_image' width={40} height={40} className='rounded-full object-contain' />
-        </div>
+        <Link className='cursor-pointer flex gap-5' href={profileLink}>
+          <div className='flex-1 flex justify-start items-center gap-3'>
+            <Image src={post.creator.image} alt='user_image' width={40} height={40} className='rounded-full object-contain' />
+          </div>
 
-        <div className='flex flex-col'>
-          <h3 className='font-satoshi font-semibold text-gary-900'>{post.creator.username}</h3>
-          <p className='fotn-inter text-sm text-gray-500'>{post.creator.email}</p>
-        </div>
+          <div className='flex flex-col'>
+            <h3 className='font-satoshi font-semibold text-gary-900'>{post.creator.username}</h3>
+            <p className='fotn-inter text-sm text-gray-500'>{post.creator.email}</p>
+          </div>
+        </Link>
 
         <div className='copy_btn' onClick={handleCopy}>
           <Image
